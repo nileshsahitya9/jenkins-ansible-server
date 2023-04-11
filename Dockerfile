@@ -1,26 +1,15 @@
-FROM  centos:latest
-MAINTAINER vikashashoke@gmail.com
-RUN yum install -y httpd \
- zip\
- unzip
-ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
-WORKDIR /var/www/html/
-RUN unzip photogenic.zip
-RUN cp -rvf photogenic/* .
-RUN rm -rf photogenic photogenic.zip
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+# Use the official Alpine Linux image as the base image
+FROM alpine:latest
+
+# Update the package manager and install Apache
+RUN apk update && apk add apache2
+
+# Copy your web files to the container
+COPY index.html /var/www/localhost/htdocs/
+
+# Expose port 80 to the host
 EXPOSE 80
- 
- 
-# FROM  centos:latest
-# MAINTAINER vikashashoke@gmail.com
-# RUN yum install -y httpd \
-#  zip\
-#  unzip
-# ADD https://www.free-css.com/assets/files/free-css-templates/download/page265/shine.zip /var/www/html/
-# WORKDIR /var/www/html/
-# RUN unzip shine.zip
-# RUN cp -rvf shine/* .
-# RUN rm -rf shine shine.zip
-# CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-# EXPOSE 80   
+
+# Start the Apache web server when the container starts
+CMD ["httpd", "-D", "FOREGROUND"]
+~                                     
